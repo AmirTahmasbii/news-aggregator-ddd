@@ -23,20 +23,20 @@ class UserController extends Controller
         protected UserServiceContract $userService,
     ) {}
 
-    public function store(UserFormRequest $request): UsersListData
+    public function register(UserFormRequest $request): \Illuminate\Http\JsonResponse
     {
-
         $userData = UserData::from($request->validated());
 
-        $email = $this->commandBus->dispatch(
+        $token = $this->commandBus->dispatch(
             new CreateUserCommand($userData),
         );
 
-        $user = $this->queryBus->ask(
-            new GetUserByEmailQuery($email),
-        );
-
-        return UsersListData::from($user);
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'token' => $token,
+            ],
+        ]);
     }
 
     public function update(int $id, UserFormRequest $request): UsersListData

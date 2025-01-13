@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Presentation\UserManagement\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Enum;
-use Shared\Enums\UserStatus;
+use Illuminate\Validation\Rules\Password;
 
 class UserFormRequest extends FormRequest
 {
@@ -27,9 +28,27 @@ class UserFormRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:3'],
+            'family' => ['required', 'string', 'min:3'],
             'email' => ['required', 'email'],
-            'password' => ['required', 'min:6', 'max:20'],
-            'status' => ['required', new Enum(UserStatus::class)],
+            'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],   
         ];
+    }
+    
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'status' => 'error',
+            'message' => $this->parseErrors($validator->errors()),
+        ], 422));
+    }
+
+    protected function parseErrors($errors)
+    {
+        $parsedErrors = [];
+        foreach ($errors->all() as $key => $error) {
+            $parsedErrors[] = $error;
+        }
+
+        return $parsedErrors;
     }
 }

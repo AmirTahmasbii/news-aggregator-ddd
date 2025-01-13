@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface UserRepositoryContract
 {
-    public function save(UserData $data): string;
+    public function create(UserData $data): String;
 
     public function findByEmail(string $email): ?User;
 

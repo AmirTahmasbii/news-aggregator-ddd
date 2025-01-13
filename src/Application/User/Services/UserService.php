@@ -14,13 +14,8 @@ class UserService implements UserServiceContract
 {
     public function __construct(private UserRepositoryContract $userRepository) {}
 
-    public function index(): Collection
+    public function register(UserData $userData)
     {
-        return $this->userRepository->getAllUsers();
-    }
-
-    public function update($id, UserData $userData): bool
-    {
-        return DB::transaction(fn() => $this->userRepository->update($id, $userData));
+        return $this->userRepository->create($userData);
     }
 }

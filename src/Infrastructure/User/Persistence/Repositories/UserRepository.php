@@ -11,11 +11,14 @@ use Illuminate\Database\Eloquent\Collection;
 
 final class UserRepository implements UserRepositoryContract
 {
-    public function save(UserData $data): string
+    public function create(UserData $data): string
     {
-        $user = User::create($data->all());
 
-        return $user->email;
+        $user = User::create($data->all());
+        
+        $token = $user->createToken('bearer', ['*'], now()->addWeek());
+        
+        return $token->plainTextToken;
     }
 
     public function findByEmail(string $email): ?User

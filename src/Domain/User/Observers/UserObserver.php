@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace Domain\User\Observers;
 
 use Domain\User\Entities\User;
+use Domain\User\Mails\UserRegistered;
+use Illuminate\Contracts\Events\ShouldHandleEventsAfterCommit;
+use Illuminate\Support\Facades\Mail;
 
-class UserObserver
+class UserObserver implements ShouldHandleEventsAfterCommit
 {
     /**
      * Handle the User "created" event.
      */
     public function created(User $user): void
     {
-        // ...
+        Mail::to($user)->send(new UserRegistered($user));
     }
 
     /**
