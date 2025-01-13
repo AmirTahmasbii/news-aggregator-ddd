@@ -9,7 +9,11 @@ use Application\Bus\Contracts\QueryBusContract;
 use Application\Bus\IlluminateCommandBus;
 use Application\Bus\IlluminateQueryBus;
 use Application\User\CommandHandlers\CreateUserCommandHandler;
+use Application\User\CommandHandlers\LoginUserCommandHandler;
+use Application\User\CommandHandlers\LogoutUserCommandHandler;
 use Application\User\Commands\CreateUserCommand;
+use Application\User\Commands\LoginUserCommand;
+use Application\User\Commands\LogoutUserCommand;
 use Application\User\Contracts\UserServiceContract;
 use Application\User\Queries\GetUserByEmailQuery;
 use Application\User\Queries\GetUserByEmailQueryHandler;
@@ -53,6 +57,8 @@ class ApplicationServiceProvider extends ServiceProvider
         $commandBus = app(CommandBusContract::class);
         $commandBus->register([
             CreateUserCommand::class => CreateUserCommandHandler::class,
+            LoginUserCommand::class => LoginUserCommandHandler::class,
+            LogoutUserCommand::class => LogoutUserCommandHandler::class,
         ]);
     }
 

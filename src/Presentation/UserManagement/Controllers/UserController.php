@@ -7,12 +7,13 @@ namespace Presentation\UserManagement\Controllers;
 use Application\Bus\Contracts\CommandBusContract;
 use Application\Bus\Contracts\QueryBusContract;
 use Application\User\Commands\CreateUserCommand;
+use Application\User\Commands\LoginUserCommand;
+use Application\User\Commands\LogoutUserCommand;
 use Application\User\Contracts\UserServiceContract;
 use Application\User\Data\UserData;
-use Application\User\Data\UsersListData;
-use Application\User\Queries\GetUserByEmailQuery;
-use Illuminate\Database\Eloquent\Collection;
+use Domain\User\Exceptions\InvalidCredentialsException;
 use Presentation\Controller;
+use Presentation\UserManagement\Requests\LoginFormRequest;
 use Presentation\UserManagement\Requests\UserFormRequest;
 
 class UserController extends Controller
@@ -39,22 +40,38 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(int $id, UserFormRequest $request): UsersListData
+    public function login(LoginFormRequest $request): \Illuminate\Http\JsonResponse
     {
-        $userData = UserData::from($request->validated());
+        try {
+            $userData = $request->validated();
 
-        $this->userService->update($id, $userData);
+            $token = $this->commandBus->dispatch(
+                new LoginUserCommand($userData['email'], $userData['password']),
+            );
 
-        $user = $this->queryBus->ask(new GetUserByEmailQuery($request->email));
-
-        return UsersListData::from($user);
+            return response()->json([
+                'status' => 'success',
+                'data' => [
+                    'token' => $token,
+                ],
+            ]);
+        } catch (InvalidCredentialsException $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+            ], 401);
+        }
     }
 
-    public function index(): Collection
+    public function logout(): \Illuminate\Http\JsonResponse
     {
+        $this->commandBus->dispatch(
+            new LogoutUserCommand(auth()->user()),
+        );
 
-        $users = $this->userService->index();
-
-        return UsersListData::collect($users);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User logged out successfully',
+        ]);
     }
 }

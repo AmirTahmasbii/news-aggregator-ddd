@@ -8,6 +8,7 @@ use Application\User\Data\UserData;
 use Domain\User\Entities\User;
 use Domain\User\Repositories\UserRepositoryContract;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Hash;
 
 final class UserRepository implements UserRepositoryContract
 {
@@ -15,17 +16,28 @@ final class UserRepository implements UserRepositoryContract
     {
 
         $user = User::create($data->all());
-        
+
         $token = $user->createToken('bearer', ['*'], now()->addWeek());
-        
+
         return $token->plainTextToken;
     }
 
-    public function findByEmail(string $email): ?User
+    public function login(string $email, string $password): ?string
     {
         $user = User::where('email', $email)->first();
 
-        return $user ?? null;
+        if (!$user || !Hash::check($password, $user->password)) {
+            return null;
+        }
+
+        $user->tokens()->delete();
+
+        return $user->createToken('bearer', ['*'], now()->addWeek())->plainTextToken;
+    }
+
+    public function logout(User $user): void
+    {
+        $user->tokens()->delete();
     }
 
     public function getAllUsers(): Collection
