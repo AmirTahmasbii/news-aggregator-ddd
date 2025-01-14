@@ -9,6 +9,7 @@ use Domain\User\Entities\User;
 use Domain\User\Repositories\UserRepositoryContract;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 
 final class UserRepository implements UserRepositoryContract
 {
@@ -40,15 +41,28 @@ final class UserRepository implements UserRepositoryContract
         $user->tokens()->delete();
     }
 
-    public function getAllUsers(): Collection
+    public function sendResetPasswordEmail(string $email): bool
     {
-        return User::all();
+        $response = Password::sendResetLink(['email' => $email]);
+
+        return $response == Password::RESET_LINK_SENT;
     }
 
-    public function update(int $id, UserData $data): bool
+    public function resetPassword(array $data): bool
     {
-        $user = User::findOrFail($id);
-
-        return $user->update($data->all());
+        $response = Password::reset(
+            [
+                'email' => $data['email'],
+                'password' => $data['password'],
+                'password_confirmation' => $data['password_confirmation'],
+                'token' => $data['token']
+            ],
+            function ($user, $password) {
+                $user->password = Hash::make($password);
+                $user->save();
+            }
+        );
+        
+        return $response == Password::PASSWORD_RESET;
     }
 }

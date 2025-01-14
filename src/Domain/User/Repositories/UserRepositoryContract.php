@@ -16,7 +16,7 @@ interface UserRepositoryContract
 
     public function logout(User $user): void;
 
-    public function getAllUsers(): Collection;
+    public function sendResetPasswordEmail(string $email): bool;
 
-    public function update(int $id, UserData $data): bool;
+    public function resetPassword(array $data): bool;
 }

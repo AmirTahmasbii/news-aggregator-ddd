@@ -15,18 +15,13 @@ class UserService implements UserServiceContract
 {
     public function __construct(private UserRepositoryContract $userRepository) {}
 
-    public function register(UserData $userData)
+    public function sendResetPasswordEmail(string $email): bool
     {
-        return $this->userRepository->create($userData);
+        return $this->userRepository->sendResetPasswordEmail($email);
     }
 
-    public function login(string $email, string $password)
+    public function resetPassword(array $data): bool
     {
-        return $this->userRepository->login($email, $password);
-    }
-
-    public function logout(User $user)
-    {
-        return $this->userRepository->logout($user);
+        return $this->userRepository->resetPassword($data);
     }
 }

@@ -8,5 +8,7 @@ use Application\User\Data\UserData;
 
 interface UserServiceContract
 {
-    public function register(UserData $userData);
+    public function sendResetPasswordEmail(string $email): bool;
+
+    public function resetPassword(array $data): bool;
 }

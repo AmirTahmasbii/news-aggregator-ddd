@@ -10,4 +10,6 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/register', 'register');
     Route::post('/login', 'login');
     Route::delete('/logout', 'logout')->middleware('auth:sanctum');
+    Route::post('/forget-password', 'forgetPassword');
+    Route::post('/reset-password', 'resetPassword')->name('password.reset');
 });

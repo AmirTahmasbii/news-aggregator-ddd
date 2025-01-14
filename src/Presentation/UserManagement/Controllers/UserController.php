@@ -13,7 +13,9 @@ use Application\User\Contracts\UserServiceContract;
 use Application\User\Data\UserData;
 use Domain\User\Exceptions\InvalidCredentialsException;
 use Presentation\Controller;
+use Presentation\UserManagement\Requests\ForgetPasswordFormRequest;
 use Presentation\UserManagement\Requests\LoginFormRequest;
+use Presentation\UserManagement\Requests\ResetPasswordFormRequest;
 use Presentation\UserManagement\Requests\UserFormRequest;
 
 class UserController extends Controller
@@ -73,5 +75,27 @@ class UserController extends Controller
             'status' => 'success',
             'message' => 'User logged out successfully',
         ]);
+    }
+
+    public function forgetPassword(ForgetPasswordFormRequest $request): \Illuminate\Http\JsonResponse
+    {
+        $validatedData = $request->validated();
+
+        $response = $this->userService->sendResetPasswordEmail($validatedData['email']);
+
+        return $response
+            ? response()->json(['status' => 'success', 'message' => 'Reset link sent to your email.'], 200)
+            : response()->json(['status' => 'error', 'message' => 'Unable to send reset link.'], 400);
+    }
+
+    public function resetPassword(ResetPasswordFormRequest $request): \Illuminate\Http\JsonResponse
+    {
+        $validatedData = $request->validated();
+
+        $response = $this->userService->resetPassword($validatedData);
+        
+        return $response 
+            ? response()->json(['status' => 'success', 'message' => 'Password has been reset.'], 200)
+            : response()->json(['status' => 'error', 'message' => 'Failed to reset password.'], 400);
     }
 }
