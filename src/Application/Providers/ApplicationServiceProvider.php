@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Application\Providers;
 
+use Application\Article\Contracts\ArticleServiceContract;
+use Application\Article\Services\ArticleService;
 use Application\Bus\Contracts\CommandBusContract;
 use Application\Bus\Contracts\QueryBusContract;
 use Application\Bus\IlluminateCommandBus;
@@ -38,6 +40,7 @@ class ApplicationServiceProvider extends ServiceProvider
         CommandBusContract::class => IlluminateCommandBus::class,
         QueryBusContract::class => IlluminateQueryBus::class,
         UserServiceContract::class => UserService::class,
+        ArticleServiceContract::class => ArticleService::class,
     ];
 
     public function register(): void

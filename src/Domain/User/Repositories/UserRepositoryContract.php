@@ -6,7 +6,6 @@ namespace Domain\User\Repositories;
 
 use Application\User\Data\UserData;
 use Domain\User\Entities\User;
-use Illuminate\Database\Eloquent\Collection;
 
 interface UserRepositoryContract
 {
