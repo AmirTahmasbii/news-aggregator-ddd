@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('author')->nullable();
             $table->string('category')->nullable();
             $table->integer('source_id')->nullable();
+            $table->integer('user_id');
             $table->timestamps();
         });
     }

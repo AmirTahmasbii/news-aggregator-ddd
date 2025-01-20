@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Infrastructure\Providers;
 
 use Domain\Article\Repositories\ArticleRepositoryContract;
+use Domain\Preference\Repositories\PreferenceRepositoryContract;
 use Domain\Source\Repositories\SourceRepositoryContract;
 use Domain\User\Repositories\UserRepositoryContract;
 use Illuminate\Support\ServiceProvider;
 use Infrastructure\Article\Persistence\Repositories\ArticleRepository;
+use Infrastructure\Preference\Persistence\Repositories\PreferenceRepository;
 use Infrastructure\Source\Persistence\Repositories\SourceRepository;
 use Infrastructure\User\Persistence\Repositories\UserRepository;
 
@@ -18,6 +20,7 @@ class InfrastructureServiceProvider extends ServiceProvider
         UserRepositoryContract::class => UserRepository::class,
         ArticleRepositoryContract::class => ArticleRepository::class,
         SourceRepositoryContract::class => SourceRepository::class,
+        PreferenceRepositoryContract::class => PreferenceRepository::class,
     ];
 
     public function register(): void {}

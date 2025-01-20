@@ -10,6 +10,12 @@ use Application\Bus\Contracts\CommandBusContract;
 use Application\Bus\Contracts\QueryBusContract;
 use Application\Bus\IlluminateCommandBus;
 use Application\Bus\IlluminateQueryBus;
+use Application\Preference\CommandHandlers\CreatePreferenceCommandHandler;
+use Application\Preference\Commands\CreatePreferenceCommand;
+use Application\Preference\Contracts\PreferenceServiceContract;
+use Application\Preference\Queries\ShowPreferenceQuery;
+use Application\Preference\Queries\ShowPreferenceQueryHandler;
+use Application\Preference\Services\PreferenceService;
 use Application\Source\Contracts\SourceServiceContract;
 use Application\Source\Services\SourceService;
 use Application\User\CommandHandlers\CreateUserCommandHandler;
@@ -44,6 +50,7 @@ class ApplicationServiceProvider extends ServiceProvider
         UserServiceContract::class => UserService::class,
         ArticleServiceContract::class => ArticleService::class,
         SourceServiceContract::class => SourceService::class,
+        PreferenceServiceContract::class => PreferenceService::class,
     ];
 
     public function register(): void
@@ -65,6 +72,7 @@ class ApplicationServiceProvider extends ServiceProvider
             CreateUserCommand::class => CreateUserCommandHandler::class,
             LoginUserCommand::class => LoginUserCommandHandler::class,
             LogoutUserCommand::class => LogoutUserCommandHandler::class,
+            CreatePreferenceCommand::class => CreatePreferenceCommandHandler::class,
         ]);
     }
 
@@ -73,6 +81,7 @@ class ApplicationServiceProvider extends ServiceProvider
         $queryBus = app(QueryBusContract::class);
         $queryBus->register([
             GetUserByEmailQuery::class => GetUserByEmailQueryHandler::class,
+            ShowPreferenceQuery::class => ShowPreferenceQueryHandler::class,
         ]);
     }
 }

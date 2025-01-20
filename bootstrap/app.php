@@ -11,6 +11,7 @@ return Application::configure(basePath: dirname(__DIR__))
             __DIR__ . '/../src/Presentation/UserManagement/routes/api.php',
             __DIR__ . '/../src/Presentation/ArticleManagement/routes/api.php',
             __DIR__ . '/../src/Presentation/SourceManagement/routes/api.php',
+            __DIR__ . '/../src/Presentation/PreferenceManagement/routes/api.php',
         ],
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
