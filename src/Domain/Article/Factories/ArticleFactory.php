@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\Article\Factories;
 
-use Domain\User\Entities\Article;
+use Domain\Article\Entities\Article;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
