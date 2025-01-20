@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\User\Persistence\Repositories;
+namespace Infrastructure\Source\Persistence\Repositories;
 
 use Domain\Source\Entities\Source;
 use Domain\Source\Repositories\SourceRepositoryContract;

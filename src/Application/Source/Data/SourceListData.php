@@ -8,5 +8,6 @@ use Spatie\LaravelData\Data;
 
 class SourceListData extends Data
 {
+    public string $id;
     public string $name;
 }

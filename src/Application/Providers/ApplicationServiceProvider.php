@@ -10,6 +10,8 @@ use Application\Bus\Contracts\CommandBusContract;
 use Application\Bus\Contracts\QueryBusContract;
 use Application\Bus\IlluminateCommandBus;
 use Application\Bus\IlluminateQueryBus;
+use Application\Source\Contracts\SourceServiceContract;
+use Application\Source\Services\SourceService;
 use Application\User\CommandHandlers\CreateUserCommandHandler;
 use Application\User\CommandHandlers\LoginUserCommandHandler;
 use Application\User\CommandHandlers\LogoutUserCommandHandler;
@@ -41,6 +43,7 @@ class ApplicationServiceProvider extends ServiceProvider
         QueryBusContract::class => IlluminateQueryBus::class,
         UserServiceContract::class => UserService::class,
         ArticleServiceContract::class => ArticleService::class,
+        SourceServiceContract::class => SourceService::class,
     ];
 
     public function register(): void

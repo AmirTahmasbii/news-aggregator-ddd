@@ -9,7 +9,8 @@ return Application::configure(basePath: dirname(__DIR__))
         web: [__DIR__ . '/../src/Presentation/UserManagement/routes/web.php'],
         api: [
             __DIR__ . '/../src/Presentation/UserManagement/routes/api.php',
-            __DIR__ . '/../src/Presentation/ArticleManagement/routes/api.php'
+            __DIR__ . '/../src/Presentation/ArticleManagement/routes/api.php',
+            __DIR__ . '/../src/Presentation/SourceManagement/routes/api.php',
         ],
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
