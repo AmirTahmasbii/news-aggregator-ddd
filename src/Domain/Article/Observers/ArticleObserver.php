@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Article\Observers;
 
-use Domain\User\Entities\Article;
+use Domain\Article\Entities\Article;
 use Illuminate\Contracts\Events\ShouldHandleEventsAfterCommit;
 
 class ArticleObserver implements ShouldHandleEventsAfterCommit

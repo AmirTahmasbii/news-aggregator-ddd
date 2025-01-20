@@ -8,7 +8,7 @@ use Domain\Article\Entities\Article;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory
  */
 class ArticleFactory extends Factory
 {
@@ -34,15 +34,5 @@ class ArticleFactory extends Factory
             'source_id' => fake()->numberBetween(1, 3),
             'published_at' => fake()->dateTime(),
         ];
-    }
-
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
-    {
-        return $this->state(fn(array $attributes) => [
-            'email_verified_at' => null,
-        ]);
     }
 }
