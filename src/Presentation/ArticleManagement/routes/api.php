@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Presentation\ArticleManagement\Controllers\ArticleController;
 
 Route::prefix('/articles')->middleware('auth:sanctum')->controller(ArticleController::class)->group(function () {
+    Route::get('/personalized-feed', 'personalizedFeed');
     Route::get('/', 'index');
     Route::get('/{article}', 'show');
 });

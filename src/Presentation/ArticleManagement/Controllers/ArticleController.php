@@ -8,6 +8,7 @@ use Application\Article\Contracts\ArticleServiceContract;
 use Application\Article\Data\ArticleData;
 use Application\Bus\Contracts\CommandBusContract;
 use Application\Bus\Contracts\QueryBusContract;
+use Application\Preference\Queries\ShowPreferenceQuery;
 use Domain\Article\Entities\Article;
 use Presentation\Controller;
 
@@ -43,6 +44,27 @@ class ArticleController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $articleData,
+        ]);
+    }
+
+    public function personalizedFeed(): \Illuminate\Http\JsonResponse
+    {
+        $preference = $this->queryBus->ask(
+            new ShowPreferenceQuery(auth()->id()),
+        );
+        
+        $articles = $this->articleService->personalizedFeed($preference);
+
+        $dataList = ArticleData::collect($articles);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $dataList,
+            'meta' => [
+                'total' => $articles->total(),
+                'perPage' => $articles->perPage(),
+                'currentPage' => $articles->currentPage(),
+            ],
         ]);
     }
 }

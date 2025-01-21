@@ -6,6 +6,7 @@ namespace Infrastructure\Article\Persistence\Repositories;
 
 use Domain\Article\Entities\Article;
 use Domain\Article\Repositories\ArticleRepositoryContract;
+use Domain\Preference\Entities\Preference;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -25,5 +26,14 @@ final class ArticleRepository implements ArticleRepositoryContract
             ->join('sources', 'articles.source_id', '=', 'sources.id')
             ->defaultSort('-published_at')
             ->paginate(10);
+    }
+
+    public function personalizedFeed(Preference $preference): LengthAwarePaginator
+    {
+        return Article::query()
+        ->where('category', $preference->category)
+        ->orWhere('author', $preference->author)
+        ->orWhere('source_id', $preference->source_id)
+        ->paginate();
     }
 }

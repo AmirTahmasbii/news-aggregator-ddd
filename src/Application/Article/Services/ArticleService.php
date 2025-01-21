@@ -6,6 +6,7 @@ namespace Application\Article\Services;
 
 use Application\Article\Contracts\ArticleServiceContract;
 use Domain\Article\Repositories\ArticleRepositoryContract;
+use Domain\Preference\Entities\Preference;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ArticleService implements ArticleServiceContract
@@ -15,5 +16,10 @@ class ArticleService implements ArticleServiceContract
     public function index(): LengthAwarePaginator
     {
         return $this->articleRepository->index();
+    }
+
+    public function personalizedFeed(Preference $preference): LengthAwarePaginator
+    {
+        return $this->articleRepository->personalizedFeed($preference);
     }
 }
