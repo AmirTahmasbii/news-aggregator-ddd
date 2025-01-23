@@ -12,4 +12,6 @@ interface ArticleRepositoryContract
     public function index(): LengthAwarePaginator;
 
     public function personalizedFeed(Preference $preference): LengthAwarePaginator;
+
+    public function store(array $articleData): void;
 }

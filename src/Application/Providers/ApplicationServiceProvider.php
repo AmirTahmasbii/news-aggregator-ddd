@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Application\Providers;
 
 use Application\Article\Contracts\ArticleServiceContract;
+use Application\Article\Contracts\FetchArticleApiServiceContract;
 use Application\Article\Services\ArticleService;
+use Application\Article\Services\FetchArticleApiService;
 use Application\Bus\Contracts\CommandBusContract;
 use Application\Bus\Contracts\QueryBusContract;
 use Application\Bus\IlluminateCommandBus;
@@ -51,6 +53,7 @@ class ApplicationServiceProvider extends ServiceProvider
         ArticleServiceContract::class => ArticleService::class,
         SourceServiceContract::class => SourceService::class,
         PreferenceServiceContract::class => PreferenceService::class,
+        FetchArticleApiServiceContract::class => FetchArticleApiService::class,
     ];
 
     public function register(): void

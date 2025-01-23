@@ -31,9 +31,14 @@ final class ArticleRepository implements ArticleRepositoryContract
     public function personalizedFeed(Preference $preference): LengthAwarePaginator
     {
         return Article::query()
-        ->where('category', $preference->category)
-        ->orWhere('author', $preference->author)
-        ->orWhere('source_id', $preference->source_id)
-        ->paginate();
+            ->where('category', $preference->category)
+            ->orWhere('author', $preference->author)
+            ->orWhere('source_id', $preference->source_id)
+            ->paginate();
+    }
+
+    public function store(array $articleData): void
+    {
+        Article::insert($articleData);
     }
 }
