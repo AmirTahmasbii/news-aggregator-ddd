@@ -118,5 +118,11 @@ return [
         'guardian' => env('GUARDIAN_API_KEY'),
         'nyt' => env('NYT_API_KEY'),
         'news_api' => env('NEWSAPI_API_KEY'),
+    ],
+
+    'api_url' => [
+        'guardian' => env('GUARDIAN_API_URL'),
+        'nyt' => env('NYT_API_URL'),
+        'news_api' => env('NEWSAPI_API_URL'),
     ]
 ];

@@ -5,6 +5,7 @@ namespace Infrastructure\Article\Apis\Guardian;
 use Carbon\Carbon;
 use Domain\Source\Repositories\SourceRepositoryContract;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 final class Client
 {
@@ -34,7 +35,7 @@ final class Client
             ]);
 
             if ($response->failed()) {
-                dd($response->json());
+                Log::warning($response->json());
                 throw new \Exception('Failed to fetch articles from API.');
             }
 

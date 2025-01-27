@@ -1,10 +1,11 @@
 <?php
 
-namespace Infrastructure\Article\Apis\NewsApi;
+namespace Infrastructure\Article\Apis\NYT;
 
 use Carbon\Carbon;
 use Domain\Source\Repositories\SourceRepositoryContract;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 final class Client
 {
@@ -14,7 +15,7 @@ final class Client
 
     public function __construct(private SourceRepositoryContract $sourceRepository)
     {
-        $source = $this->sourceRepository->index()->firstWhere('name', 'newsapi');
+        $source = $this->sourceRepository->index()->firstWhere('name', 'nyt');
 
         $this->source_id = $source->id;
         $this->api_key = $source->api_key;
@@ -24,18 +25,17 @@ final class Client
     public function fetchArticles()
     {
         $response = Http::get($this->api_url, [
-            'q' => 'everything',
-            'language' => 'en',
-            'from' => now()->subDays(2)->format('Y-m-d'),
-            'to' => now()->subDays(1)->format('Y-m-d'),
-            'apiKey' => $this->api_key,
+            'begin_date' => now()->subDays(2)->format('Ymd'),
+            'end_date' => now()->subDays(1)->format('Ymd'),
+            'api-key' => $this->api_key,
         ]);
 
         if ($response->failed()) {
+            Log::warning($response->json());
             throw new \Exception('Failed to fetch articles from API.');
         }
-        
-        $articles = $this->mapArticles($response['articles']);
+
+        $articles = $this->mapArticles($response['response']['docs']);
 
         return $articles;
     }
@@ -46,15 +46,15 @@ final class Client
 
         foreach ($response as $article) {
             $articles[] = [
-                'title' => $article['title'],
-                'content' => $article['content'],
-                'keywords' => $article['keywords'] ?? 'everything',
-                'category' => $article['category'] ?? 'everything',
-                'author' => $article['author'] ?? 'unknown',
+                'title' => $article['abstract'],
+                'content' => $article['web_url'],
+                'keywords' => $article['news_desk'],
+                'category' => $article['section_name'],
+                'author' => $article['source'],
                 'source_id' => $this->source_id,
-                'published_at' => Carbon::parse($article['publishedAt']),
+                'published_at' => Carbon::parse($article['pub_date']),
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ];
         }
 

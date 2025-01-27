@@ -25,7 +25,7 @@ class SourceFactory extends Factory
      */
     public function definition(): array
     {
-        $names = ['Guardian', 'BBC', 'NewsAPI'];
+        $names = ['Guardian', 'NYT', 'NewsAPI'];
         $randomName = $names[array_rand($names)];
 
         return [
