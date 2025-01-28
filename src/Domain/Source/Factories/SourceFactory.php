@@ -25,11 +25,14 @@ class SourceFactory extends Factory
      */
     public function definition(): array
     {
-        $names = ['Guardian', 'NYT', 'NewsAPI'];
-        $randomName = $names[array_rand($names)];
+        $names = ['guardian', 'nyt', 'newsapi'];
+        
+        $fake_name = $this->faker->randomElement($names);
 
         return [
-            'name' => $randomName,
+            'name' => $fake_name,
+            'api_url' => config('auth.api_url.' . $fake_name),
+            'api_key' => config('auth.api_key.' . $fake_name),
         ];
     }
 }

@@ -29,6 +29,7 @@ class PreferenceFactory extends Factory
             'category' => fake()->word(),
             'author' => fake()->name(),
             'source_id' => fake()->numberBetween(1, 3),
+            'user_id' => fake()->numberBetween(1, 3),
         ];
     }
 }

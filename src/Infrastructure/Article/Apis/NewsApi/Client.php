@@ -5,6 +5,7 @@ namespace Infrastructure\Article\Apis\NewsApi;
 use Carbon\Carbon;
 use Domain\Source\Repositories\SourceRepositoryContract;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 final class Client
 {
@@ -32,7 +33,8 @@ final class Client
         ]);
 
         if ($response->failed()) {
-            throw new \Exception('Failed to fetch articles from API.');
+                Log::warning("News API: " . $response->json());
+                throw new \Exception('Failed to fetch articles from API.');
         }
         
         $articles = $this->mapArticles($response['articles']);

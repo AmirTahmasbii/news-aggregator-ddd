@@ -31,7 +31,7 @@ final class Client
         ]);
 
         if ($response->failed()) {
-            Log::warning($response->json());
+            Log::warning("NYT API: " . $response->json());
             throw new \Exception('Failed to fetch articles from API.');
         }
 

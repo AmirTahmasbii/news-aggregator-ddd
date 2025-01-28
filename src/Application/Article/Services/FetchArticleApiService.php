@@ -19,12 +19,32 @@ class FetchArticleApiService implements FetchArticleApiServiceContract
 
     public function fetchAndStoreArticles(): void
     {
-        $guardian_articles = $this->guardianClient->fetchArticles();
-        $newsApi_articles = $this->newsApiClient->fetchArticles();
-        $nyt_articles = $this->nytClient->fetchArticles();
+        $guardian_articles = $this->fetchGuardianArticles();
+        $newsApi_articles = $this->fetchNewsApiArticles();
+        $nyt_articles = $this->fetchNytArticles();
 
         $articles = array_merge($guardian_articles, $newsApi_articles, $nyt_articles);
 
+        $this->storeArticles($articles);
+    }
+
+    private function fetchGuardianArticles(): array
+    {
+        return $this->guardianClient->fetchArticles();
+    }
+
+    private function fetchNewsApiArticles(): array
+    {
+        return $this->newsApiClient->fetchArticles();
+    }
+
+    private function fetchNytArticles(): array
+    {
+        return $this->nytClient->fetchArticles();
+    }
+
+    private function storeArticles(array $articles): void
+    {
         $this->articleRepository->store($articles);
     }
 }

@@ -7,6 +7,7 @@ namespace Domain\Preference\Entities;
 use Domain\Preference\Factories\PreferenceFactory;
 use Domain\Preference\Observers\PreferenceObserver;
 use Domain\Source\Entities\Source;
+use Domain\User\Entities\User;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -33,6 +34,11 @@ class Preference extends Model
     public function source()
     {
         return $this->belongsTo(Source::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
     
     protected static function newFactory()

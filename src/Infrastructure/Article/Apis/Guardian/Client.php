@@ -35,7 +35,7 @@ final class Client
             ]);
 
             if ($response->failed()) {
-                Log::warning($response->json());
+                Log::warning("Guardian API: " . $response->json());
                 throw new \Exception('Failed to fetch articles from API.');
             }
 
