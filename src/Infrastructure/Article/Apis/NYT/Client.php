@@ -15,15 +15,17 @@ final class Client
 
     public function __construct(private SourceRepositoryContract $sourceRepository)
     {
+
+    }
+
+    public function fetchArticles()
+    {
         $source = $this->sourceRepository->index()->firstWhere('name', 'nyt');
 
         $this->source_id = $source->id;
         $this->api_key = $source->api_key;
         $this->api_url = $source->api_url;
-    }
-
-    public function fetchArticles()
-    {
+        
         $response = Http::get($this->api_url, [
             'begin_date' => now()->subDays(2)->format('Ymd'),
             'end_date' => now()->subDays(1)->format('Ymd'),
