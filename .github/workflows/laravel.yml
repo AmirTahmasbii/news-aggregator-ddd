@@ -21,6 +21,11 @@ jobs:
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.test', '.env');"
 
+    - name: Set Environment Variables
+      run: |
+        echo "DB_CONNECTION=sqlite" >> .env
+        echo "DB_DATABASE=database/database.sqlite" >> .env
+        
     - name: Install Dependencies
       run: composer install --no-progress --prefer-dist
 
@@ -41,10 +46,6 @@ jobs:
 
     - name: Debug Database Tables
       run: php artisan migrate:status  # Debugging: Check if tables exist
-      
-    - name: Set Environment Variables
-      run: |
-        echo "DB_CONNECTION=sqlite" >> .env
-        echo "DB_DATABASE=database/database.sqlite" >> .env
+
     - name: Run Tests
       run: php artisan test
