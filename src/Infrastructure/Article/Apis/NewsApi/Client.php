@@ -20,11 +20,7 @@ final class Client
 
     public function fetchArticles()
     {
-        $source = $this->sourceRepository->index()->firstWhere('name', 'newsapi');
-
-        $this->source_id = $source->id;
-        $this->api_key = $source->api_key;
-        $this->api_url = $source->api_url;
+        $this->setConfig();
         
         $response = Http::get($this->api_url, [
             'q' => 'everything',
@@ -63,5 +59,14 @@ final class Client
         }
 
         return $articles;
+    }
+
+    private function setConfig()
+    {
+        $source = $this->sourceRepository->index()->firstWhere('name', 'newsapi');
+
+        $this->source_id = $source->id;
+        $this->api_key = $source->api_key;
+        $this->api_url = $source->api_url;
     }
 }
