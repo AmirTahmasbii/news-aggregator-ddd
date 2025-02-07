@@ -13,11 +13,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Copy .env.test to .env
-      run: cp .env.test .env
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Install Dependencies
-      run: composer install --prefer-dist --no-ansi --no-interaction --no-scripts --no-progress
-    - name: Set Environment to Test
-      run: echo "DB_CONNECTION=sqlite" >> .env
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
     - name: Generate key
       run: php artisan key:generate
     - name: Directory Permissions
@@ -29,4 +27,7 @@ jobs:
     - name: Run Migrations and Seed
       run: php artisan migrate:fresh --seed --force
     - name: Execute tests (Unit and Feature tests)
+      env:
+        DB_CONNECTION: sqlite
+        DB_DATABASE: database/database.sqlite
       run: php artisan test
